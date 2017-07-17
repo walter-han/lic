@@ -1,0 +1,370 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>运动框架</title>
+
+<style type="text/css">
+    *{padding: 0px;font-size: 14px; margin: 0px; font-family: '微软雅黑' ;}
+    img{display: block;}
+    body{ background-color: #666;}
+    #bigbox{ width: 400px; height: 430px;background-color: #888; margin: auto;margin-top: 50px;}
+    #topimgbox{ width: 400px; height: 320px; background-color: #444; float: left;border-bottom: 1px #cccccc solid;position: relative;}
+    #topbottombox{ width: 100%; height: 25px;background-color: #777; opacity: 0.3;filter:alpha(opacity=30); position: absolute;z-index: 1; bottom: 0px; line-height: 25px;font-size: 14px;}
+        #bleft{position: absolute; left:10px; color: #ccc; opacity: 1;z-index: 1;bottom: 3px;}
+        #bright{position: absolute; right:10px; color: #ccc;opacity: 1;z-index: 1;bottom: 3px;}
+    .imgbox{position: absolute; width: 100%;height: 100%; overflow: hidden;}
+    .imgbox img{ width: 100%;}
+    #zzleft{ width: 50%; height: 100%; background-color: #000;position: absolute; left: 0px;z-index: 2;opacity: 0;filter:alpha(opacity=0)}  
+    #zzright{ width: 50%; height: 100%; background-color: #000;position: absolute; right: 0px;z-index: 2;opacity: 0;filter:alpha(opacity=0)}  
+    #leftjt{ cursor:pointer;width: 79px; height: 79px; background:url('img/left.png');position: absolute; left:14px; z-index: 3; top:120px;opacity: 0;filter:alpha(opacity=0)}
+    #rightjt{  cursor:pointer;width: 79px; height: 79px; background:url('img/right.png');position: absolute; right:14px; z-index: 3; top:120px;opacity: 0;filter:alpha(opacity=0)}
+    #one{ z-index: 1}
+    #bottombigbox{ width: 380px; height: 94px; float: left; margin-top: 7px; margin-left: 10px;position: relative;overflow: hidden; }
+    #bottombox{height: 94px; position: absolute;  float: left;left: -650px;}
+    .bottomimgbox{ width: 120px; height: 94px; margin-right: 10px;  float: left;opacity: 0.3;filter:alpha(opacity=30)}
+    .bottomimgbox img{display: block; width: 100%; height:100%}
+    #dszz1{cursor:pointer;width: 79px; height: 79px;position: absolute; left:14px; z-index: 1; top:120px;}
+    #dszz2{cursor:pointer;width: 79px; height: 79px; ;position: absolute;  right:14px; z-index: 1; top:120px;}
+    
+</style>
+
+
+</head>
+
+<body style=" height:2500px;">
+<input type="text" id="txt" style=" width:300px;">
+<div id="bigbox">
+    <div id="topimgbox">
+        <div class="imgbox" id="one"><img src="img/1.jpg"></div>
+        <div class="imgbox"><img src="img/2.jpg"></div>
+        <div class="imgbox"><img src="img/3.jpg"></div>
+        <div class="imgbox"><img src="img/4.jpg"></div>
+        <div class="imgbox"><img src="img/5.jpg"></div>
+        <div class="imgbox"><img src="img/6.jpg"></div>
+        <div id="topbottombox"></div>
+        <div id="bleft">这里什么都没有</div><div id="bright">这里也是。。。</div>
+        <div id="zzleft"></div><div id="zzright"></div>
+        <div id="leftjt"></div><div id="rightjt"></div>
+        <div id="dszz1"></div>
+        <div id="dszz2"></div>
+
+    </div>
+    <div id="bottombigbox">
+        <div id="bottombox">
+            <div class="bottomimgbox"><img src="img/1.jpg"></div>
+            <div class="bottomimgbox"><img src="img/2.jpg"></div>
+            <div class="bottomimgbox"><img src="img/3.jpg"></div>
+            <div class="bottomimgbox"><img src="img/4.jpg"></div>
+            <div class="bottomimgbox"><img src="img/5.jpg"></div>
+            <div class="bottomimgbox"><img src="img/6.jpg"></div>
+            <div class="bottomimgbox"><img src="img/1.jpg"></div>
+            <div class="bottomimgbox"><img src="img/2.jpg"></div>
+            <div class="bottomimgbox"><img src="img/3.jpg"></div>
+            <div class="bottomimgbox"><img src="img/4.jpg"></div>
+            <div class="bottomimgbox"><img src="img/5.jpg"></div>
+            <div class="bottomimgbox"><img src="img/6.jpg"></div>
+        </div>
+    </div>
+</div>
+ <input id='inp' type="text">
+</body>
+
+<script>
+var dszz1=document.getElementById('dszz1');
+var dszz2=document.getElementById('dszz2');
+
+//简易版取值函数 返回值需要去掉后缀 有很多值取不出
+//以上处理盒子宽度问题
+function lowgetvalue(obj,valuename){
+    if(obj.currentStyle){
+       return obj.currentStyle[valuename]
+    }else{
+       return getComputedStyle(obj,false)[valuename]
+    }
+}
+//简易版取值函数 返回值需要去掉后缀 有很多值取不出
+
+
+
+
+var imgnumber=0;var imgnumber2;
+for(var j=0;j<document.getElementsByTagName('div').length;j++){
+   if(document.getElementsByTagName('div')[j].className=='bottomimgbox'){
+   imgnumber=imgnumber+1;imgnumber2=parseFloat(lowgetvalue(document.getElementsByTagName('div')[j],'width'))+parseFloat(lowgetvalue(document.getElementsByTagName('div')[j],'marginRight'));
+   
+   } 
+}
+document.getElementById('bottombox').style['width']=imgnumber2*imgnumber+'px';
+//以上处理盒子宽度问题
+
+//这里是下盒子的移动函数
+var bottombox=document.getElementById('bottombox')
+bottombox.timeleft=null;
+var clk=5;
+var inp=document.getElementById('inp');
+function btboxmove(value,lr){
+    clearInterval(bottombox.timeleft)
+    var leftnow;var ieleftnow;var vl;var ievl;
+    leftnow=parseFloat(lowgetvalue(bottombox,'left'));
+    bottombox.timeleft=setInterval(
+        function(){
+            if(vl===0){
+                clearInterval(bottombox.timeleft);
+                };
+            vl=Math.abs(Math.abs(leftnow)-Math.abs(value))/5;
+            
+            if(leftnow>value){
+                vl=-vl;
+                if(Math.abs(vl)<1){
+                    vl=-1;leftnow=parseInt(leftnow); 
+                }
+            }
+
+            if(parseInt(leftnow)==value){
+                vl=0;
+            }
+            leftnow=leftnow+vl;
+            bottombox.style['left']=leftnow+'px';
+            if(lr=='right'&&leftnow<=-1170){
+                    //alert('我回调了')
+                    bottombox.style['left']='-390px';
+                    clk=3;
+                }else if(lr=='left'&&leftnow>=-260){
+                   bottombox.style['left']='-910px';
+                    clk=7; 
+                }
+         inp.value=clk  
+            
+        }
+        ,10)
+
+}
+
+
+//这里是下盒子的移动函数
+
+
+
+
+
+
+
+
+
+var txt=document.getElementById('txt');
+//以下是箭头的对象构造函数和原型 关于透明度的
+function citymovejt(idname){
+    this.obj=document.getElementById(idname);
+    this.obj.timecity;
+};
+citymovejt.prototype={
+        cityjt:function(value1){//这里的this等于对象实例
+            var oooo=this.obj;var ctnow;var vct;var iectnow;var ievct;
+            clearInterval(oooo.timecity);//首先清除定时器
+            //开始获取当前元素的当前透明度值
+        if(oooo.currentStyle){ 
+           if(oooo.currentStyle['opacity1']){//首先得得到IE的
+                iectnow=oooo.currentStyle['opacity1'];//这是没有opacity具体值 第二次快速移入移入时避免造成误差获取IE自己设置的透明度标示
+            }else if(oooo.currentStyle['opacity']){
+                iectnow=Math.floor(oooo.currentStyle['opacity']*100)//这是有的情况下
+            }else if(!(oooo.currentStyle['opacity'])){
+                iectnow=100;//这里是没有opacity具体值且第一次移入的时候（肯定是没设置，没设置肯定得默认是100 IE下是100）
+                //IE获取到的当前透明度完毕 接下来判断IE下的透明度变化速度
+            };//开始判断IE下的速度
+            if(iectnow-Math.floor(value1*100)<0){
+                ievct=1;
+            }else if(iectnow-Math.floor(value1*100)>0){
+                ievct=-1;
+            }else{
+                ievct=0;
+            }      //IE下的透明度变化速度判断完毕
+        }else{
+            ctnow=Number(getComputedStyle(oooo,false)['opacity']);//这里是非IE的当前第一次判断
+            //现在开始判断非IE下的透明度变化速度
+            if(ctnow-value1<0){
+                vct=0.01;
+            }else if(ctnow-value1>0){
+                vct=-0.01;
+            }else{
+                vct=0;
+            }//非IE下的透明度变化速度判断完毕
+        };//非IE下的初始透明度值取值完毕
+        //开启定时器
+        oooo.timecity=setInterval(
+            function(){
+                if(oooo.currentStyle){
+                    if(ievct==0){clearInterval(oooo.timecity)}
+                }else{
+                    if(vct==0){clearInterval(oooo.timecity)}
+                };
+                //先判断定时器是否开启   
+                if(ievct==1){
+                    if(iectnow>=Math.floor(value1*100)){
+                        ievct=0;
+                    }
+                }else if(ievct==-1){
+                    if(iectnow<=Math.floor(value1*100)){
+                        ievct=0;
+                    }
+                }//IE
+                if(vct==0.01){
+                    if(ctnow>=value1){
+                        vct=0;ctnow=value1;
+                    }
+                }else if(vct==-0.01){
+                    if(ctnow<=value1){
+                        vct=0;ctnow=value1;
+                    }    
+                }//非IE
+                //判断是否达到值 
+                iectnow=iectnow+ievct;//IE下的透明度数值变化
+                ctnow=ctnow+vct;//IE下的透明度数值变化
+                if(oooo.currentStyle){oooo.style.filter="alpha(opacity:"+iectnow+")";oooo.style.opacity1=iectnow;/*IE下面的具体变化*/}else{oooo.style.opacity=ctnow;/*非IE下的具体变化*/ }
+                    
+            }
+            ,1)
+
+    },//箭头的淡入淡出效果面向对象就写完了
+        
+        ck:function(lrname){
+            var n;
+           var djnb=citymovejt.prototype.dianji;
+           var oooo=this.obj;var ieindxnow;var indxnow;
+           oooo.onclick=function(){
+            dszz1.style['z-index']=100000000;dszz2.style['z-index']=100000000;
+            //开始点击下图变化
+            if(lrname=='right'){clk++}else if(lrname=='left'){clk--}  
+            btboxmove(-130*clk,lrname);
+            //开始点击下图变化
+            //下面先开始判断哪张图显示在第一个
+            //先判断图片数量
+           var divarray=document.getElementsByTagName('div');
+           var imgarray=[];
+            for(var i=0;i<=divarray.length-1;i++){
+                if(divarray[i].className=='imgbox'){imgarray.push(divarray[i])};
+           };//判断class名字为imgbox的div塞进数组imgarray
+            if(lrname=='right'){//判断是点击的哪个按钮，这个必须通过传输进来的参数来判断
+                if(citymovejt.prototype.dianji<imgarray.length-1){
+                    citymovejt.prototype.dianji=citymovejt.prototype.dianji+1;
+                }else{
+                    citymovejt.prototype.dianji=0;
+                };
+            }else if(lrname=='left'){
+                if(citymovejt.prototype.dianji>0){
+                    citymovejt.prototype.dianji=citymovejt.prototype.dianji-1;
+                }else{
+                    citymovejt.prototype.dianji=imgarray.length-1
+                };
+              
+            }; //已得出第几张图片需要显示在最前面 下面开始用一个for循环先来清除带有zindex的imgbox的ID
+            for(var ii=0;ii<imgarray.length;ii++){
+                imgarray[ii].id='';
+                imgarray[ii].style.height='0px';
+                clearInterval(imgarray[ii].timedown)//定时器的指向问题一定要注意！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+                imgarray[ii].timedown=null;
+            }//然后根据获取的点击按钮值来当下标赋值这个下标的imgbox的带zindex的id
+            //这里判断N来保证上一张要百分之百显示
+            if(lrname=='right'){
+                n=citymovejt.prototype.dianji-1;
+                if(n==-1){
+                    n=imgarray.length-1;
+                }
+            }else if(lrname=='left'){
+                n=citymovejt.prototype.dianji+1;
+                if(n==imgarray.length){
+                    n=0;
+                }
+            }
+            imgarray[n].style['height']='320px'
+            imgarray[citymovejt.prototype.dianji].id='one';
+            //这里先写个函数然后直接运行哈 
+            function movedonw(value){
+
+                var heightnow;var ieheightnow;var vh;var ievh;
+                clearInterval(imgarray[n].timedown);
+                clearInterval(imgarray[citymovejt.prototype.dianji].timedown);
+                imgarray[citymovejt.prototype.dianji].timedown=setInterval(function(){
+                    if(oooo.currentStyle){
+                        if(parseFloat(imgarray[citymovejt.prototype.dianji].currentStyle['height'])>=value){
+                        clearInterval(imgarray[citymovejt.prototype.dianji].timedown);imgarray[citymovejt.prototype.dianji].style['height']=value+'px'; txt.value=ieheightnow;  
+                        };
+                        ieheightnow=parseFloat(imgarray[citymovejt.prototype.dianji].currentStyle['height']);
+                        ievh=(value-ieheightnow)/10;
+                        if(ievh<1){
+                            ievh=1;
+                        }
+                        imgarray[citymovejt.prototype.dianji].style['height']=(ieheightnow+ievh)+'px';
+                        
+
+
+                    }else{
+                        if(parseFloat(getComputedStyle(imgarray[citymovejt.prototype.dianji],false)['height'])>=value){
+                            clearInterval(imgarray[citymovejt.prototype.dianji].timedown);imgarray[citymovejt.prototype.dianji].style['height']=value+'px';txt.value=heightnow;dszz1.style['z-index']=1;dszz2.style['z-index']=1; 
+                        }
+                       heightnow=parseFloat(getComputedStyle(imgarray[citymovejt.prototype.dianji],false)['height']);
+                       vh=(value-heightnow)/10;
+                       if(vh<1){
+                            vh=1
+                       };
+                       imgarray[citymovejt.prototype.dianji].style['height']=(heightnow+vh)+'px';
+                    }
+                    
+                }
+                    ,20)
+                };
+                movedonw(320);
+            //先改变所有的zindex层级,首先得获取所需要改变的所有zindex值
+                if(oooo.currentStyle){
+                    if(oooo.currentStyle['zIndex']=='auto'){
+                        ieindxnow=0;
+                    }else{
+                        ieindxnow=oooo.currentStyle['zIndex'];
+                    }//首先是IE情况下的,判断完毕
+                ieindxnow=ieindxnow+1;
+                document.getElementById('leftjt').style['zIndex']=ieindxnow;
+                document.getElementById('rightjt').style['zIndex']=ieindxnow; 
+                zzleft.style['zIndex']=ieindxnow-1;
+                zzright.style['zIndex']=ieindxnow-1;
+                    //这里IE的zindex层就设置完毕 
+                }else{ 
+                    if(getComputedStyle(oooo,false)['z-index']=='auto'){
+                        indxnow=0;
+                    }else{
+                        indxnow=Number(getComputedStyle(oooo,false)['z-index']);
+                    };//获取非IE下的zindex初始值完毕
+                    indxnow=indxnow+1; 
+                    document.getElementById('leftjt').style['z-index']=indxnow;
+                    document.getElementById('rightjt').style['z-index']=indxnow; 
+                    zzleft.style['z-index']=indxnow-1;
+                    zzright.style['z-index']=indxnow-1;
+                    //这里非IE的zindex层就设置完毕    
+                }
+           }
+        },
+
+        dianji:0
+}
+//以上是箭头的对象构造函数和原型 关于透明度的
+
+var zzright=document.getElementById('zzright');
+var zzleft=document.getElementById('zzleft');
+var leftjt=new citymovejt('leftjt');
+var rightjt=new citymovejt('rightjt');
+dszz1.onmouseover=leftjt.obj.onmouseover=zzleft.onmouseover=function(){
+    leftjt.cityjt(1);
+}
+dszz2.onmouseover=rightjt.obj.onmouseover=zzright.onmouseover=function(){
+    rightjt.cityjt(1);
+}
+dszz1.onmouseout=leftjt.obj.onmouseout=zzleft.onmouseout=function(){
+    leftjt.cityjt(0);
+}
+dszz2.onmouseout=rightjt.obj.onmouseout=zzright.onmouseout=function(){
+    rightjt.cityjt(0);
+}
+//时间可以连锁着写 譬如 obj.mouseover=obj2.mouseover=function(){alert('两个元共用一个事件')}   这种语法要牢记！！！！！！！！！！！！！！
+leftjt.ck('left');rightjt.ck('right');
+</script>
+
+</html>
